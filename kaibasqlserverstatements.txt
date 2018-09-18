@@ -1,0 +1,94 @@
+
+
+
+--Create a new database called kaibaredux.  
+CREATE DATABASE kaibaredux;  
+GO
+
+USE kaibaredux;
+GO
+
+
+CREATE TABLE dbo.t_menu  
+   (menuID int IDENTITY(1,1) PRIMARY KEY NOT NULL ,  
+    menuName varchar(100) NOT NULL,  
+    menuDescription varchar(500) NOT NULL, 
+    menuPosition float NOT NULL
+	);
+
+CREATE TABLE dbo.t_section 
+   (sectionID int IDENTITY(1,1) PRIMARY KEY NOT NULL ,  
+    sectionName varchar(100) NOT NULL,  
+    sectionDescription varchar(500) NULL, 
+    sectionPosition float NOT NULL,
+    sectionPicturePath varchar(500) NULL, 
+    menuID int FOREIGN KEY REFERENCES t_menu(menuID)
+	);
+
+CREATE TABLE dbo.t_item 
+   (itemID int IDENTITY(1,1) PRIMARY KEY NOT NULL ,  
+    itemName varchar(100) NOT NULL,  
+    itemDescription varchar(500) NULL, 
+    itemPosition float NOT NULL,
+    itemPicturePath varchar(500) NULL, 
+    sectionID int FOREIGN KEY REFERENCES t_section(sectionID) ON DELETE CASCADE
+	);
+
+CREATE TABLE dbo.t_priceline 
+   (pricelineID int IDENTITY(1,1) PRIMARY KEY NOT NULL,  
+    pricelineDescription varchar(100) NULL,  
+    pricelinePrice money NOT NULL,
+    pricelinePosition float NOT NULL, 
+    itemID int FOREIGN KEY REFERENCES t_item(itemID) ON DELETE CASCADE
+	);
+	
+GO
+
+--insert data
+
+INSERT INTO t_menu (menuName, menuDescription, menuPosition) VALUES
+('Lunch Menu', 'Served till 3 PM', 1),
+('Dinner Menu', 'Basically the same as the lunch menu, but with higher prices', 2);
+
+INSERT INTO t_section (sectionName, sectionDescription, sectionPosition, sectionPicturePath, menuID) VALUES
+('Apps', 'To start you off', 1, 'PicPath', 1),
+('Deserts', 'To finish you off', 2, 'PicPath', 1),
+
+('Entries', 'To fill you up', 1, 'PicPath', 2),
+('Booze', 'To mellow you out', 2, 'PicPath', 2);
+
+
+
+INSERT INTO t_item (itemName, itemDescription, itemPosition, itemPicturePath, sectionID) VALUES
+('Onion Rings', 'Fried onions, what could be better?', 1, 'PicPath', 1),
+('Wings', 'Careful they`re hot', 2, 'PicPath', 1),
+
+('Cake', 'Let yourself eat cake', 1, 'PicPath', 2),
+('Ice Cream', 'Your choices are oreo or cookies and cream', 2, 'PicPath', 2),
+
+('Burger', 'The classic American heart-throb (attack)', 1, 'PicPath', 3),
+('Pizza', 'Bastardized Itialian classic', 2, 'PicPath', 3),
+
+('Beer', 'What kind? It just says Beer', 1, 'PicPath', 4),
+('Vodka', 'It`s actually Draino', 2, 'PicPath',4);
+
+
+
+INSERT INTO t_priceline (pricelineDescription, pricelinePrice, pricelinePosition, itemID) VALUES
+('4 Rings', 5, 1, 1),
+('10 Rings', 10, 2, 1),
+('4 Wings', 8, 1, 2),
+('10 Wings', 15, 2, 2),
+
+('', 50, 1, 3),
+('', 50, 1, 4),
+
+('', 50, 1, 5),
+('', 50, 1, 6),
+
+('Beer', 50, 1, 7),
+('Vodka', 50, 1, 8);
+
+GO
+
+
