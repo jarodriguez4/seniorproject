@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Edit Section</title>
+
+    <!-- Get the Jquery library from google-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Load the separate JavaScript file-->
+    <script src="js/JavascriptFunctions.js"></script>
+
+    <script>
+        // This is the javascript for this page
+
+        // global variable denoting whether this is a create or edit 
+        var create = false;
+
+        $(document).ready(function () {
+            // code written here is not executed until the web page has finished loading, preventing any errors with page elements not having loaded yet
+
+            // change heading to Create section if that's what we're doing 
+            // a negative id, means this is a create operation, and that negative number is the menuID
+            if (parseInt(getQueryParam("id")) < 0) {
+                create = true;
+                $('#heading').text("Create Section Page");
+                $('#id').hide();
+                $('#id').val("0");
+                $('#idLabel').hide();
+
+                // assign the menuID
+                let menuID = (-1 * (parseInt(getQueryParam("id"))));
+                $('#menuID').val(menuID);
+                console.log("sdgdslg " + menuID);
+                // change the back link to go to this section's menu
+                $("#menuDisplayLink").attr("href", "index.html?id=" + menuID);
+            }
+            else {
+                // otherwise load the info for the section that is being edited
+                loadSection(getQueryParam("id"));
+            }
+
+            // set onclick event for the submit button
+            $('#submit').click(function () {submitSection(create) });
+
+
+
+        });
+
+
+    </script>
+</head>
+<body>
+    <h2 id="heading"> Edit Section Page</h2>
+
+    <div>
+        <span id="idLabel">ID: </span><br>
+        <input type="text" id="id" value="" readonly>
+        <br>
+        Section Name:<br>
+        <input type="text" id="name" value="">
+        <br>
+        Section Description:<br>
+        <input type="text" id="description" value="">
+        <br>
+        Section Position:<br>
+        <input type="text" id="position" value="">
+
+        <!--MenuID, changeablity not implemented :<br>-->
+        <input type="hidden" id="menuID" value="">
+        <!--Picture Path, changeablity not implemented:<br>-->
+        <input type="hidden" id="picturePath" value="picPath">
+
+        <br><br>
+        <input type="submit" value="Submit" id="submit">
+    </div>
+
+    <br><br>
+    <a id="menuDisplayLink" href="index.html">Back to Menu Display</a>
+
+</body>
+</html>
